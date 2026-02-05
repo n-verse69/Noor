@@ -360,10 +360,10 @@ function createStickers() {
         
         if (isLeft) {
     sticker.style.left = '10%';
-    sticker.style.animation = `stickerPopFromLeft 8s ease-out forwards`;  // ← Changed
+    sticker.style.animation = `stickerPopFromLeft 5s ease-out forwards`;  // ← Changed
 } else {
     sticker.style.right = '10%';
-    sticker.style.animation = `stickerPopFromRight 8s ease-out forwards`;  // ← Changed
+    sticker.style.animation = `stickerPopFromRight 5s ease-out forwards`;  // ← Changed
 }
         
         // Vertical position with slight randomness
@@ -380,7 +380,7 @@ function createStickers() {
     if (sticker && sticker.parentNode) {
         sticker.remove();
     }
-}, 8000 + (index * 200));  // ← Changed to 5000
+}, 5000 + (index * 200));  // ← Changed to 5000
     });
 }
 });
