@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let noClickCount = 0;
     let isNoButtonMoving = false;
     let noButtonMoveInterval;
+    let hasShownStickers = false;
     
     // Initialize the page
     initPage();
@@ -78,7 +79,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Create confetti
         createConfetti();
-        
+
+        // Show stickers only on first YES click
+if (!hasShownStickers) {
+    createStickers();
+    hasShownStickers = true;
+}
         // Show celebration screen after a short delay
         setTimeout(() => {
             questionScreen.classList.remove('active');
@@ -329,4 +335,52 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', () => {
         lastInteraction = Date.now();
     });
+// Create sticker pop-up animation
+function createStickers() {
+    const stickersContainer = document.querySelector('.stickers-container');
+    const stickerPaths = [
+        'stickers/sticker1.png',
+        'stickers/sticker2.png',
+        'stickers/sticker3.png',
+        'stickers/sticker4.png'
+    ];
+    
+    stickerPaths.forEach((path, index) => {
+        const sticker = document.createElement('div');
+        sticker.classList.add('sticker');
+        
+        const img = document.createElement('img');
+        img.src = path;
+        img.alt = `Sticker ${index + 1}`;
+        
+        sticker.appendChild(img);
+        
+        // Alternate sides: left (even index) or right (odd index)
+        const isLeft = index % 2 === 0;
+        
+        if (isLeft) {
+    sticker.style.left = '10%';
+    sticker.style.animation = `stickerPopFromLeft 8s ease-out forwards`;  // ← Changed
+} else {
+    sticker.style.right = '10%';
+    sticker.style.animation = `stickerPopFromRight 8s ease-out forwards`;  // ← Changed
+}
+        
+        // Vertical position with slight randomness
+        const baseBottom = 20 + (index * 15);
+        sticker.style.bottom = `${baseBottom}%`;
+        
+        // Stagger the animation start times
+        sticker.style.animationDelay = `${index * 0.2}s`;
+        
+        stickersContainer.appendChild(sticker);
+        
+        // Remove sticker after animation completes
+        setTimeout(() => {
+    if (sticker && sticker.parentNode) {
+        sticker.remove();
+    }
+}, 8000 + (index * 200));  // ← Changed to 5000
+    });
+}
 });

@@ -466,7 +466,76 @@ body {
 .impossible {
     pointer-events: none;
 }
+/* Stickers animation */
+.stickers-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 998;
+}
 
+.sticker {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.sticker img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+@keyframes stickerPopFromLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-100px) translateY(0) scale(0.5) rotate(-15deg);
+    }
+    15% {
+        opacity: 1;
+        transform: translateX(0) translateY(-20px) scale(1.2) rotate(5deg);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(20px) translateY(-150px) scale(1) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(40px) translateY(-300px) scale(0.8) rotate(10deg);
+    }
+}
+
+@keyframes stickerPopFromRight {
+    0% {
+        opacity: 0;
+        transform: translateX(100px) translateY(0) scale(0.5) rotate(15deg);
+    }
+    15% {
+        opacity: 1;
+        transform: translateX(0) translateY(-20px) scale(1.2) rotate(-5deg);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(-20px) translateY(-150px) scale(1) rotate(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-40px) translateY(-300px) scale(0.8) rotate(-10deg);
+    }
+}
+
+/* Mobile adjustments */
+@media (max-width: 500px) {
+    .sticker {
+        width: 60px;
+        height: 60px;
+    }
+}
 /* Mobile responsiveness */
 @media (max-width: 500px) {
     .container {
