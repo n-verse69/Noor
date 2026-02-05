@@ -21,6 +21,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let isNoButtonMoving = false;
     let noButtonMoveInterval;
     let hasShownStickers = false;
+    let hasShownStickers = false;
+let hasShownSecretMode = false;
+let shakeThreshold = 15;
+let lastShakeTime = 0;
     
     // Initialize the page
     initPage();
@@ -360,10 +364,10 @@ function createStickers() {
         
         if (isLeft) {
     sticker.style.left = '10%';
-    sticker.style.animation = `stickerPopFromLeft 5s ease-out forwards`;  // ← Changed
+    sticker.style.animation = `stickerPopFromLeft 8s ease-out forwards`;  // ← Changed
 } else {
     sticker.style.right = '10%';
-    sticker.style.animation = `stickerPopFromRight 5s ease-out forwards`;  // ← Changed
+    sticker.style.animation = `stickerPopFromRight 8s ease-out forwards`;  // ← Changed
 }
         
         // Vertical position with slight randomness
@@ -380,7 +384,44 @@ function createStickers() {
     if (sticker && sticker.parentNode) {
         sticker.remove();
     }
-}, 5000 + (index * 200));  // ← Changed to 5000
+}, 8000 + (index * 200));  // ← Changed to 5000
     });
+}
+// ============================================
+// SHAKE TO REVEAL SECRET HEARTFELT MODE
+// ============================================
+if (window.DeviceMotionEvent) {
+    window.addEventListener('devicemotion', handleShake);
+}
+
+function handleShake(event) {
+    // Only trigger once
+    if (hasShownSecretMode) return;
+    
+    // Cooldown to prevent accidental triggers
+    const currentTime = new Date().getTime();
+    if (currentTime - lastShakeTime < 1000) return;
+    
+    const acceleration = event.accelerationIncludingGravity;
+    
+    // Detect shake motion
+    if (
+        Math.abs(acceleration.x) > shakeThreshold ||
+        Math.abs(acceleration.y) > shakeThreshold ||
+        Math.abs(acceleration.z) > shakeThreshold
+    ) {
+        lastShakeTime = currentTime;
+        activateSecretMode();
+    }
+}
+
+function activateSecretMode() {
+    hasShownSecretMode = true;
+    
+    // Get the secret mode overlay
+    const secretMode = document.getElementById('secret-mode');
+    
+    // Activate it (this hides everything else because of z-index)
+    secretMode.classList.add('active');
 }
 });
